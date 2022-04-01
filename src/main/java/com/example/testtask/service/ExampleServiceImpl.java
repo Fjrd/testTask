@@ -2,6 +2,7 @@ package com.example.testtask.service;
 
 import com.example.testtask.api.controller.dto.response.ExampleResponse;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.HmacAlgorithms;
 import org.apache.commons.codec.digest.HmacUtils;
 import org.springframework.stereotype.Service;
@@ -12,11 +13,13 @@ import java.util.stream.Collectors;
 
 import static com.example.testtask.api.controller.dto.response.ExampleResponse.Status.*;
 
+@Slf4j
 @Service
 public class ExampleServiceImpl implements ExampleService{
 
     @Override
     public ExampleResponse getEncodedParams(Long operationId, Map<String, String> params) {
+        log.info("getEncodedParams(), operationId = {}", operationId);
 
         String paramString = params.entrySet().stream()
                 .map(entry -> entry.getKey() + "=" + entry.getValue())

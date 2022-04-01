@@ -1,5 +1,6 @@
 package com.example.testtask.config.security;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
+@Slf4j
 @Component
 public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
@@ -23,12 +25,13 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
         String token = request.getHeader("Token");
         try{
             if (Objects.isNull(token))
-                throw new SecurityException("Missing header 'Token'");
+                throw new SecurityException("missing header 'Token'");
 
             if (!Objects.equals(token, verificationToken))
-                throw new SecurityException("Invalid token");
+                throw new SecurityException("invalid token");
 
         } catch (SecurityException e){
+            log.info("Unauthorized access attempt, " + e.getMessage());
             response.sendError(403);
         }
         filterChain.doFilter(request, response);
